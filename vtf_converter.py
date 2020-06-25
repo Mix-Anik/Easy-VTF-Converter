@@ -22,7 +22,12 @@ def convert(texture_path, version):
 
     # Creating VTF-type object & converting to requested version
     vtf = VTF_File(bytelist)
-    vtf.convert(minor_version)
+
+    # Just in case, so it wouldn't stop processing other files
+    try:
+        vtf.convert(minor_version)
+    except:
+        print("Unexpected error")
 
     # Writing new file (replacing old one)
     tex_file = open(texture_path, 'wb')
