@@ -4,7 +4,7 @@ Software for comfortable conversion of VTF images
 VTF versions supported: **7.0-7.5**  
 OS supported: currently only **Windows**  
 
-<img src="pictures/preview.jpg" width="500" height="300"/>
+<img src="pictures/preview.jpg" width="400" height="250"/>
 
 Converting VTF images wasn't as easy before  
 ### Quick Start  
