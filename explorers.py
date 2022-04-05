@@ -1,48 +1,50 @@
-import win32gui
+import win32gui as w
 import re
 
 
-w = win32gui
-
-def _normaliseText(controlText):
+def _normalise_text(controlText):
     return controlText.lower().replace('&', '')
 
-def _windowEnumerationHandler(hwnd, resultList):
-    resultList.append((hwnd, win32gui.GetWindowText(hwnd), win32gui.GetClassName(hwnd)))
 
-def searchChildWindows(currentHwnd, wantedText=None, wantedClass=None, selectionFunction=None):
+def _window_enumeration_handler(hwnd, result_list):
+    result_list.append((hwnd, w.GetWindowText(hwnd), w.GetClassName(hwnd)))
+
+
+def find_child_windows(current_hwnd, wanted_class=None):
     results = []
-    childWindows = []
+    children = []
 
     try:
-        win32gui.EnumChildWindows(currentHwnd, _windowEnumerationHandler, childWindows)
-    except win32gui.error:
+        w.EnumChildWindows(current_hwnd, _window_enumeration_handler, children)
+    except w.error:
         return
 
-    for childHwnd, windowText, windowClass in childWindows:
-        if (wantedText and not _normaliseText(wantedText) in _normaliseText(windowText)) or \
-           (wantedClass and not windowClass == wantedClass) or \
-           (selectionFunction and not selectionFunction(childHwnd)): continue
+    for child_hwnd, _, window_class in children:
+        if wanted_class and not window_class == wanted_class:
+            continue
 
-        results.append(childHwnd)
+        results.append(child_hwnd)
+
     return results
 
-def windowIterator(hwnd, output):
+
+def window_iterator(hwnd, output):
     if w.IsWindowVisible(hwnd) and w.GetClassName(hwnd) == "CabinetWClass":
         output.append(hwnd)
 
-def getExplorerWindowPaths():
+
+def get_explorer_window_paths():
     windows = []
     paths = []
-    w.EnumWindows(windowIterator, windows)
+    w.EnumWindows(window_iterator, windows)
 
     for window in windows:
-        children = list(set(searchChildWindows(window, wantedClass="ToolbarWindow32")))
+        children = list(set(find_child_windows(window, wanted_class="ToolbarWindow32")))
         path = None
 
         for child in children:
             parent = w.GetParent(child)
-            window_text = win32gui.GetWindowText(child)
+            window_text = w.GetWindowText(child)
             has_address = re.search(r".:\\", window_text)
 
             if has_address and w.GetClassName(parent) == "Breadcrumb Parent":

@@ -1,50 +1,50 @@
 from struct import pack, unpack
 
 
-class c_uint32():
-    def __init__(self, bytes):
-        self.value = unpack('<I', bytes)[0]
+class CType:
+    python_type = None
+    type_format = None
+
+    def __init__(self, byte_data):
+        self.value = unpack(f'<{self.type_format}', byte_data)[0]
 
     def raw(self):
-        return pack("<I", self.value)
+        return pack(f'<{self.type_format}', self.value)
+
     def set(self, new_value):
-        if type(new_value) == int:
+        if isinstance(new_value, self.python_type):
             self.value = new_value
         else:
-            print("New value must be of type 'int'")
+            print(f'New value must be of type "{self.python_type}"')
 
-class c_ushort():
-    def __init__(self, bytes):
-        self.value = unpack('<H', bytes)[0]
 
-    def raw(self):
-        return pack("<H", self.value)
-    def set(self, new_value):
-        if type(new_value) == int:
-            self.value = new_value
-        else:
-            print("New value must be of type 'int'")
+class CUint32(CType):
+    python_type = int
+    type_format = 'I'
 
-class c_float():
-    def __init__(self, bytes):
-        self.value = unpack('<f', bytes)[0]
+    def __init__(self, byte_data):
+        super().__init__(byte_data)
 
-    def raw(self):
-        return pack("<f", self.value)
-    def set(self, new_value):
-        if type(new_value) == float:
-            self.value = new_value
-        else:
-            print("New value must be of type 'float'")
 
-class c_uchar():
-    def __init__(self, bytes):
-        self.value = unpack('<B', bytes)[0]
+class CUShort(CType):
+    python_type = int
+    type_format = 'H'
 
-    def raw(self):
-        return pack('<B', self.value)
-    def set(self, new_value):
-        if type(new_value) == int:
-            self.value = new_value
-        else:
-            print("New value must be of type 'int'")
+    def __init__(self, byte_data):
+        super().__init__(byte_data)
+
+
+class CFloat(CType):
+    python_type = float
+    type_format = 'f'
+
+    def __init__(self, byte_data):
+        super().__init__(byte_data)
+
+
+class CUChar(CType):
+    python_type = int
+    type_format = 'B'
+
+    def __init__(self, byte_data):
+        super().__init__(byte_data)
