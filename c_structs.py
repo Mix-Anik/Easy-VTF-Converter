@@ -3,13 +3,13 @@ from struct import pack, unpack
 
 class CType:
     python_type = None
-    type_format = None
+    c_type_format = None
 
     def __init__(self, byte_data):
-        self.value = unpack(f'<{self.type_format}', byte_data)[0]
+        self.value = unpack(f'<{self.c_type_format}', byte_data)[0]
 
     def raw(self):
-        return pack(f'<{self.type_format}', self.value)
+        return pack(f'<{self.c_type_format}', self.value)
 
     def set(self, new_value):
         if isinstance(new_value, self.python_type):
@@ -20,7 +20,7 @@ class CType:
 
 class CUint32(CType):
     python_type = int
-    type_format = 'I'
+    c_type_format = 'I'
 
     def __init__(self, byte_data):
         super().__init__(byte_data)
@@ -28,7 +28,7 @@ class CUint32(CType):
 
 class CUShort(CType):
     python_type = int
-    type_format = 'H'
+    c_type_format = 'H'
 
     def __init__(self, byte_data):
         super().__init__(byte_data)
@@ -36,7 +36,7 @@ class CUShort(CType):
 
 class CFloat(CType):
     python_type = float
-    type_format = 'f'
+    c_type_format = 'f'
 
     def __init__(self, byte_data):
         super().__init__(byte_data)
@@ -44,7 +44,7 @@ class CFloat(CType):
 
 class CUChar(CType):
     python_type = int
-    type_format = 'B'
+    c_type_format = 'B'
 
     def __init__(self, byte_data):
         super().__init__(byte_data)
