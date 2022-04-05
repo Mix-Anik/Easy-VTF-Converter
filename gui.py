@@ -11,7 +11,7 @@ from vtf_structs import VTFFile
 
 
 OS_TYPE = system()
-version = "1.0"
+VERSION = "1.1"
 supported_os = ["Windows"]
 
 
@@ -93,7 +93,7 @@ if OS_TYPE in supported_os:
     window = tk.Tk()
     window.geometry('500x275')
     window.resizable(False, False)
-    window.title("Easy VTF Converter %s" % version)
+    window.title("Easy VTF Converter %s" % VERSION)
 
     mainframe = tk.Frame()
     mainframe.pack(padx=8, pady=8)
