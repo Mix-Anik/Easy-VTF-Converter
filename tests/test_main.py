@@ -18,9 +18,7 @@ TEST_PARAM_LIST = [tuple([f, *v]) for v in itertools.product(range(6), repeat=2)
 class TestVTFChanger:
 
     def setup_class(self):
-        # Path to VTFCmd.exe, usually in the same location as VTFEdit.exe
-        # Or can be downloaded here https://github.com/NeilJed/VTFLib/releases
-        self.VTFCMD_path = 'C:\\Program Files\\SDK Plugins\\Tools\\VTFEdit\\VTFCmd.exe'
+        self.VTFCMD_path = '<vtfcmd.exe absolute path here>'
         self.temp_fname = 'temp'
 
     @pytest.mark.parametrize('file_path,from_version,to_version', TEST_PARAM_LIST)
