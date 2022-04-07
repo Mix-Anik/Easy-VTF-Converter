@@ -56,15 +56,15 @@ def convert_textures():
 
     if len(sel_path_idxs) > 0:
         start_time = time()
-        textures_paths = find_textures([path_selector.get(sel_path_idx) for sel_path_idx in sel_path_idxs])
+        textures_paths = find_textures([path_selector.get(sel_path_idx) for sel_path_idx in sel_path_idxs], bool(subfolders_var.get()))
         progress["value"] = 0
 
         write_to_console("Found %s texture(s) in %s directory(ies)" % (len(textures_paths), len(sel_path_idxs)))
-        write_to_console("Converting to VTF version %s" % vervar.get())
+        write_to_console("Converting to VTF version %s" % version_var.get())
 
         for i in range(len(textures_paths)):
             tex_path = textures_paths[i]
-            convert_single_texture(tex_path, vervar.get())
+            convert_single_texture(tex_path, version_var.get())
             progress["value"] += 100 / len(textures_paths)
             window.update()
 
@@ -91,7 +91,7 @@ def update_explorer_data(msg=True):
 if OS_TYPE in supported_os:
     # Main software window and frame setup
     window = tk.Tk()
-    window.geometry('500x275')
+    window.geometry('500x290')
     window.resizable(False, False)
     window.title("Easy VTF Converter %s" % VERSION)
 
@@ -117,14 +117,17 @@ if OS_TYPE in supported_os:
 
     # Right part of the window (buttons, selectors)
     versions = ['7.0', '7.1', '7.2', '7.3', '7.4', '7.5']
-    vervar = tk.StringVar(mainframe)
-    vervar.set('7.2')
+    version_var = tk.StringVar(mainframe, '7.2')
+    subfolders_var = tk.IntVar(mainframe, 1)
 
     # Version selector
     tk.Label(mainframe, text="Convert to").grid(row=0, column=2)
-    vselector = tk.OptionMenu(mainframe, vervar, *versions)
+    vselector = tk.OptionMenu(mainframe, version_var, *versions)
     vselector.config(width=2, relief=tk.SOLID, bd=1, fg="#000acc")
     vselector.grid(row=0, column=3, sticky=tk.E + tk.W)
+
+    subfolders_cb = tk.Checkbutton(mainframe, text="subfolders too?", variable=subfolders_var)
+    subfolders_cb.grid(row=1, column=2, columnspan=2, sticky=tk.E + tk.W)
 
     # Button's *onhover* handlers
     def ud_hover_in(e): update_btn['background'] = '#edfaff'
