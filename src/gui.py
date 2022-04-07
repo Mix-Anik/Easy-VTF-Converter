@@ -5,9 +5,9 @@ from tkinter.ttk import Progressbar
 from platform import system
 from time import time
 
-from helpers import find_textures
-from explorers import get_explorer_window_paths
-from vtf_structs import VTFFile
+from src.helpers import find_textures
+from src.explorers import get_explorer_window_paths
+from src.vtf_structs import VTFFile
 
 
 OS_TYPE = system()
@@ -45,7 +45,7 @@ def convert_single_texture(texture_path, version):
         tex_file = open(texture_path, 'wb')
         tex_file.write(vtf.compose())
         tex_file.close()
-    except:
+    except Exception:
         write_to_console(f'Failed to convert "{texture_path}"')
 
 
